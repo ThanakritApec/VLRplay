@@ -11,7 +11,7 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
+  // This widget is the root of your application.f
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -23,7 +23,8 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          colorScheme: ColorScheme.fromSeed(
+              seedColor: const Color.fromARGB(255, 8, 226, 241)),
           useMaterial3: true,
         ),
         home: const MyHomePage(),
@@ -49,7 +50,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
+    return const DefaultTabController(
         length: 2,
         child: Scaffold(
           body: TabBarView(
@@ -60,8 +61,14 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           bottomNavigationBar: TabBar(
             tabs: [
-              Tab(text: "รายการธุรกรรม", icon: Icon(Icons.list),),
-              Tab(text: "เพิ่มข้อมูล", icon: Icon(Icons.add),),
+              Tab(
+                text: "รายชื่อPlayer",
+                icon: Icon(Icons.list),
+              ),
+              Tab(
+                text: "เพิ่มข้อมูล",
+                icon: Icon(Icons.add),
+              ),
             ],
           ),
         ));
