@@ -20,7 +20,6 @@ class _FormScreenState extends State<FormScreen> {
 
   @override
   void dispose() {
-    // ทำการลบ TextEditingController เมื่อไม่ใช้งานแล้วเพื่อป้องกัน memory leak
     playernameCtl.dispose();
     realnameCtl.dispose();
     teamCtl.dispose();
@@ -74,7 +73,7 @@ class _FormScreenState extends State<FormScreen> {
                 decoration: InputDecoration(
                   labelText: 'Realname',
                   filled: true,
-                  fillColor: Colors.teal.shade50,
+                  fillColor: Colors.red.shade50,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
@@ -93,7 +92,7 @@ class _FormScreenState extends State<FormScreen> {
                 decoration: InputDecoration(
                   labelText: 'Team',
                   filled: true,
-                  fillColor: Colors.teal.shade50,
+                  fillColor: Colors.red.shade50,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
@@ -112,7 +111,7 @@ class _FormScreenState extends State<FormScreen> {
                 decoration: InputDecoration(
                   labelText: 'Zone',
                   filled: true,
-                  fillColor: Colors.teal.shade50,
+                  fillColor: Colors.red.shade50,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
@@ -154,7 +153,7 @@ class _FormScreenState extends State<FormScreen> {
                     }
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.teal, // สีของปุ่ม
+                    backgroundColor: Colors.red, // สีของปุ่ม
                     padding: const EdgeInsets.symmetric(
                         horizontal: 50, vertical: 15),
                     shape: RoundedRectangleBorder(
