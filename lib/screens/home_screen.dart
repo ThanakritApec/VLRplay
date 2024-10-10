@@ -2,7 +2,6 @@ import 'package:account/provider/transaction_provider.dart';
 import 'package:account/screens/edit_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -20,7 +19,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: const Color.fromARGB(255, 255, 0, 0),
+        backgroundColor: const Color(0xFFB71C1C), // Dark Red
         title: const Text(
           "VLR PLAYER",
           style: TextStyle(
@@ -39,21 +38,23 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: TextField(
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 hintText: 'ค้นหารายการ...',
-                border: InputBorder.none,
-                hintStyle: TextStyle(
-                    color: Color.fromARGB(255, 255, 255, 255),
-                    fontWeight: FontWeight.bold),
+                filled: true,
+                fillColor: Colors.white,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30.0),
+                  borderSide: BorderSide.none,
+                ),
+                hintStyle: const TextStyle(
+                    color: Colors.grey, fontWeight: FontWeight.bold),
               ),
               onChanged: (value) {
                 setState(() {
                   searchQuery = value;
                 });
               },
-              style: const TextStyle(
-                  color: Color.fromARGB(255, 255, 255, 255),
-                  fontWeight: FontWeight.bold),
+              style: const TextStyle(color: Colors.black),
             ),
           ),
         ),
@@ -66,6 +67,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 .toLowerCase()
                 .contains(searchQuery.toLowerCase());
           }).toList();
+
           if (filteredTransactions.isEmpty) {
             return const Center(
               child: Text(
@@ -79,11 +81,14 @@ class _HomeScreenState extends State<HomeScreen> {
               itemBuilder: (context, index) {
                 var statement = filteredTransactions[index];
                 return Card(
-                  elevation: 5,
+                  elevation: 4,
                   margin:
-                      const EdgeInsets.symmetric(vertical: 5, horizontal: 8),
+                      const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15),
+                  ),
                   child: ListTile(
-                    contentPadding: EdgeInsets.all(16.0),
+                    contentPadding: const EdgeInsets.all(16.0),
                     title: Text(
                       statement.ingamename,
                       style: const TextStyle(
@@ -94,30 +99,27 @@ class _HomeScreenState extends State<HomeScreen> {
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Playername: ${statement.ingamename}',
-                            style: TextStyle(fontSize: 16)),
                         Text('Realname: ${statement.realname}',
-                            style: TextStyle(fontSize: 16)),
+                            style: const TextStyle(fontSize: 16)),
                         Text('Team: ${statement.team}',
-                            style: TextStyle(fontSize: 16)),
+                            style: const TextStyle(fontSize: 16)),
                         Text('Zone: ${statement.zone}',
-                            style: TextStyle(fontSize: 16)),
+                            style: const TextStyle(fontSize: 16)),
                       ],
                     ),
                     leading: CircleAvatar(
-                      backgroundColor: const Color.fromARGB(255, 255, 71, 71),
+                      backgroundColor: const Color(0xFFEF5350), // Lighter Red
                       child: FittedBox(
                         child: Text(
-                          statement.ingamename,
-                          style: TextStyle(color: Colors.white),
+                          statement.ingamename[0], // Show first letter
+                          style: const TextStyle(color: Colors.white),
                         ),
                       ),
                     ),
                     trailing: IconButton(
                       icon: const Icon(
                         Icons.delete,
-                        color: Color.fromARGB(255, 253, 18, 1),
-                        size: 45,
+                        color: Color(0xFFB71C1C), // Dark Red
                       ),
                       onPressed: () {
                         provider.deleteTransaction(statement.keyID);
