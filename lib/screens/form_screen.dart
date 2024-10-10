@@ -46,7 +46,7 @@ class _FormScreenState extends State<FormScreen> {
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
-                  color: Colors.teal,
+                  color: Colors.black,
                 ),
               ),
               const SizedBox(height: 20),
@@ -153,7 +153,7 @@ class _FormScreenState extends State<FormScreen> {
                     }
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.red, // สีของปุ่ม
+                    backgroundColor: Colors.red,
                     padding: const EdgeInsets.symmetric(
                         horizontal: 50, vertical: 15),
                     shape: RoundedRectangleBorder(
@@ -162,7 +162,10 @@ class _FormScreenState extends State<FormScreen> {
                   ),
                   child: const Text(
                     'บันทึก',
-                    style: TextStyle(fontSize: 18),
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.black,
+                    ),
                   ),
                 ),
               ),
