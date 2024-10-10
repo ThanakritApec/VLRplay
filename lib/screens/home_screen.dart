@@ -1,7 +1,5 @@
 import 'package:account/provider/transaction_provider.dart';
 import 'package:account/screens/edit_screen.dart';
-import 'package:account/screens/edit_screen.dart.bak';
-import 'package:account/screens/form_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -15,70 +13,133 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  String searchQuery = '';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Theme.of(context).colorScheme.primary,
-          title: const Text("แอพบัญชี"),
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.exit_to_app),
-              onPressed: () {
-                SystemNavigator.pop();
-              },
-            ),
-          ],
+      appBar: AppBar(
+        centerTitle: true,
+        backgroundColor: const Color.fromARGB(255, 255, 0, 0),
+        title: const Text(
+          "VLR PLAYER",
+          style: TextStyle(
+              fontWeight: FontWeight.bold, fontSize: 25, color: Colors.white),
         ),
-        body: Consumer(
-          builder: (context, TransactionProvider provider, Widget? child) {
-            if (provider.transactions.isEmpty) {
-              return const Center(
-                child: Text('ไม่มีรายการ'),
-              );
-            } else {
-              return ListView.builder(
-                itemCount: provider.transactions.length,
-                itemBuilder: (context, index) {
-                  var statement = provider.transactions[index];
-                  return Card(
-                    elevation: 5,
-                    margin:
-                        const EdgeInsets.symmetric(vertical: 5, horizontal: 8),
-                    child: ListTile(
-                      title: Text(statement.title),
-                      subtitle: Text(DateFormat('dd MMM yyyy hh:mm:ss')
-                          .format(statement.date)),
-                      leading: CircleAvatar(
-                        radius: 30,
-                        child: FittedBox(
-                          child: Text('${statement.amount}'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.exit_to_app),
+            onPressed: () {
+              SystemNavigator.pop();
+            },
+          ),
+        ],
+        bottom: PreferredSize(
+          preferredSize: Size.fromHeight(56.0),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: TextField(
+              decoration: const InputDecoration(
+                hintText: 'ค้นหารายการ...',
+                border: InputBorder.none,
+                hintStyle: TextStyle(
+                    color: Color.fromARGB(255, 255, 255, 255),
+                    fontWeight: FontWeight.bold),
+              ),
+              onChanged: (value) {
+                setState(() {
+                  searchQuery = value;
+                });
+              },
+              style: const TextStyle(
+                  color: Color.fromARGB(255, 255, 255, 255),
+                  fontWeight: FontWeight.bold),
+            ),
+          ),
+        ),
+      ),
+      body: Consumer<TransactionProvider>(
+        builder: (context, provider, child) {
+          final filteredTransactions =
+              provider.transactions.where((transaction) {
+            return transaction.ingamename
+                .toLowerCase()
+                .contains(searchQuery.toLowerCase());
+          }).toList();
+          if (filteredTransactions.isEmpty) {
+            return const Center(
+              child: Text(
+                'ไม่มีรายการ',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+              ),
+            );
+          } else {
+            return ListView.builder(
+              itemCount: filteredTransactions.length,
+              itemBuilder: (context, index) {
+                var statement = filteredTransactions[index];
+                return Card(
+                  elevation: 5,
+                  margin:
+                      const EdgeInsets.symmetric(vertical: 5, horizontal: 8),
+                  child: ListTile(
+                    contentPadding: EdgeInsets.all(16.0),
+                    title: Text(
+                      statement.ingamename,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
+                    ),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Playername: ${statement.ingamename}',
+                            style: TextStyle(fontSize: 16)),
+                        Text('Realname: ${statement.realname}',
+                            style: TextStyle(fontSize: 16)),
+                        Text('Team: ${statement.team}',
+                            style: TextStyle(fontSize: 16)),
+                        Text('Zone: ${statement.zone}',
+                            style: TextStyle(fontSize: 16)),
+                      ],
+                    ),
+                    leading: CircleAvatar(
+                      backgroundColor: const Color.fromARGB(255, 255, 71, 71),
+                      child: FittedBox(
+                        child: Text(
+                          statement.ingamename,
+                          style: TextStyle(color: Colors.white),
                         ),
                       ),
-                      trailing: IconButton(
-                        icon: const Icon(Icons.delete),
-                        onPressed: () {
-                          provider.deleteTransaction(statement.keyID);
-                        },
+                    ),
+                    trailing: IconButton(
+                      icon: const Icon(
+                        Icons.delete,
+                        color: Color.fromARGB(255, 253, 18, 1),
+                        size: 45,
                       ),
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) {
-                              return EditScreen(statement: statement);
-                            },
-                          ),
-                        );
+                      onPressed: () {
+                        provider.deleteTransaction(statement.keyID);
                       },
                     ),
-                  );
-                },
-              );
-            }
-          },
-        )
-        // This trailing comma makes auto-formatting nicer for build methods.
-        );
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return EditScreen(statement: statement);
+                          },
+                        ),
+                      );
+                    },
+                  ),
+                );
+              },
+            );
+          }
+        },
+      ),
+    );
   }
 }
